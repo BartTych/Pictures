@@ -25,7 +25,11 @@ class Read_jpeg(Read_meta.Read_meta):
         #exif
 
         with open(path, "rb") as img_file:
-            img = Image_exif(img_file)
+            try:
+                img = Image_exif(img_file)
+            except:
+                return None
+            
             if img.has_exif:
                 # that should be protected by try except
                 try:
