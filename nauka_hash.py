@@ -64,3 +64,24 @@ if __name__ == '__main__':
     print("\nDuplicates found:")
     for dup_file, kept_file, dup_size, kept_size in duplicates_list:
         print(f"Duplicate: {dup_file} (Size: {dup_size} bytes) kept: {kept_file} (Size: {kept_size} bytes)")
+
+
+
+
+# solution to the problem of attaching metadata to images:
+# will include metadata in logic of what is a duplicate
+# for the seme size it is easy, remove the one without metadata or random if both have metadata or not
+# but for resized images there are two options:
+# - if reduced resolution has metadata stop the program and ask user because it seems that he attached new metadata to smaller image by mistake
+# - if reduced resolution has no metadata, remove it
+
+
+
+# logics of what is a duplicate:
+# jpeg can have have a exact copy or a resized version
+# goal is to remove same size duplicates and remove resized duplicates
+
+# heic can have a copy as heic or jpeg
+# gaol is to remove heic duplicates and remove jpeg duplicates
+
+# that logic is not exploring all possibilities jet

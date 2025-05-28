@@ -16,8 +16,25 @@ new_path = '/Users/bart_mac/Desktop/No_date_files'
 
 files_ordered = set()
 ordered_repeat_check = set()    
+
+
 files_not_ordered = set()
 not_ordered_repeat_check = set()
+
+
+# new repeat check besed on file hash for both ordered and not ordered files
+# if the file hash is in the set it is neccesary to chech which is larger
+# when it is larger it replaces the smaller one
+# when it is smaller it is not added to the set and script continues
+# so the whole idea of previous repeat check is not needed just some info in whinch set the file is
+
+
+# Walk through the directory and process files
+# prepares set of files with metadata and without metadata
+# without repeatitions
+# repeatitions are checked by metadata and file size when metadata is available
+# when metadata is not available it is checked by file name and file size
+
 
 for root, dirs, files in os.walk(path):
         for file in files:
