@@ -44,4 +44,5 @@ movie processing
 
 as it was done before
     removing files with same meta and size
-    or removing files with same name and size 
+    no metafiles are a problem
+      
