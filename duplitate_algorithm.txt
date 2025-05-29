@@ -1,0 +1,47 @@
+
+
+generate list of all picture files
+
+#one core
+list_of_pictures = []
+list_of_movies = []
+# multiprocessing since hash generation is quite computationaly demanding 
+picteres = [(hash,ext)]
+
+# removing duplicates logic done by one processor
+
+if heic && heic
+    tolerance <= 2
+# copy of the file in different archives
+logic check metadata and remove file without it
+
+if jpeg && jpeg
+    tollerance depend on resolution difference
+        for same resolutions:
+            teleranec <= 2
+        for different resolutions:
+            tolerance <= 4
+
+            metadata check 
+# copy of the file in different archives 
+# copy can have different resolution
+logic when the same resolution remove the one without metadata 
+    when smaller have meta and larger do not ask user !!
+    when larger have meta remove smaller 
+
+if heic && jpeg 
+    tolerance = have to check that !!
+    metadata check
+
+# some files in heic are converted to jpeg during downloading
+logic 
+
+***
+aditionally I will do a test for that by putting some series of files in a folder and checking if result is as expected. 
+
+
+movie processing
+
+as it was done before
+    removing files with same meta and size
+    or removing files with same name and size 

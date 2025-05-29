@@ -69,12 +69,16 @@ if __name__ == '__main__':
 
 
 # solution to the problem of attaching metadata to images:
+# proble is i add files with metadata to the input folder but there are alse copies without metadata
+# so the logic of duplicates has to choose the one with metadata
+
+
 # will include metadata in logic of what is a duplicate
 # for the seme size it is easy, remove the one without metadata or random if both have metadata or not
+
 # but for resized images there are two options:
 # - if reduced resolution has metadata stop the program and ask user because it seems that he attached new metadata to smaller image by mistake
 # - if reduced resolution has no metadata, remove it
-
 
 
 # logics of what is a duplicate:
