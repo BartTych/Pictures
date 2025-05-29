@@ -24,16 +24,17 @@ def detect_if_duplicate(hash_val, hash_list, toler=4):
             return i
     return -1
 
-if __name__ == '__main__':
+
     
 
-    # Step 1: Collect all file paths
-    file_paths = []
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            if not file.startswith('.'):
-                file_paths.append(os.path.join(root, file))
+# Step 1: Collect all file paths
+file_paths = []
+for root, dirs, files in os.walk(path):
+    for file in files:
+        if not file.startswith('.'):
+            file_paths.append(os.path.join(root, file))
 
+if __name__ == '__main__':
     # Step 2: Parallel hash computation
     with Pool(processes=cpu_count()) as pool:
         results = pool.map(hash_image, file_paths)
@@ -41,7 +42,6 @@ if __name__ == '__main__':
     # Step 3: Deduplication pass
     hash_list = []
     duplicates_list = []
-
     for item in results:
         if item is None:
             continue

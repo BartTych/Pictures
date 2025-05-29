@@ -44,5 +44,6 @@ movie processing
 
 as it was done before
     removing files with same meta and size
-    no metafiles are a problem
+    no metafiles are a problem, don't know how to solve it yet. easiest is to put all duplicates in that folder and remove duplitates by hand 
+    since there are just a few such problematic movies. 
       
