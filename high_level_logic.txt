@@ -1,0 +1,20 @@
+
+
+list_all_pictures = []
+
+gather metadata, ext,resolution and hash 
+
+will do it functionaly
+remove duplicates
+    
+create new folder structure
+    for files without matadata there is simply on more folder with 
+
+create new names
+    for pictures with metada base on month
+    for pictures without metadata, ad something to the end of file name
+
+copy files 
+
+
+

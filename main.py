@@ -1,11 +1,11 @@
-import load_all_handlers
-import file_processor as file_processor
+import load_meta_data_handlers
+import file_data_extractor as file_data_extractor
 import os
 import shutil
 # Assuming handlers are classes that inherit from Read_meta
 
-handlers = load_all_handlers.load_all_handlers()
-file_processor = file_processor.flie_meta_extractor(handlers)
+handlers = load_meta_data_handlers.load_all_handlers()
+file_data_extractor = file_data_extractor.flie_meta_extractor(handlers)
 
 
 valid_extensions = {'.jpg', '.jpeg', '.heic','.mov','.mp4','.avi'}
@@ -42,7 +42,7 @@ for root, dirs, files in os.walk(path):
                 continue
             file_path = os.path.join(root, file)
             
-            metadata = file_processor.apply(file_path)
+            metadata = file_data_extractor.apply(file_path)
             if metadata is not None:
                 if (metadata,os.path.getsize(file_path)) not in ordered_repeat_check:
                     ordered_repeat_check.add((metadata,os.path.getsize(file_path)))
