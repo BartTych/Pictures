@@ -6,11 +6,14 @@ from imagehash import phash
 
 class Generate_jpeg_heic_hash(hash_gen.Generate_hash):
 
-    def generate(self, path: str) -> dict:
+    def generate(self, path: str) -> int:
         try:
             with Image.open(path) as img:
-                return (phash(img))
-        except:
+                img = img.convert('RGB')  # Normalize to prevent mode-related issues
+                hash_str = str(phash(img))  # e.g., 'ff00aa11...'
+                return int(hash_str, 16)    # Cast hex string to int
+        except Exception as e:
+            print(f"Error generating hash for {path}: {e}")
             return None
 
 

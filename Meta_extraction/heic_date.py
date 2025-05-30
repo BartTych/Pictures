@@ -1,4 +1,4 @@
-import Processors.Read_meta as Read_meta
+import Meta_extraction.Read_meta as Read_meta
 from datetime import datetime
 
 # HEIC

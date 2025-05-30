@@ -1,6 +1,6 @@
 
 import Resolution_reader.Resolution_meta as Resolution_meta
-from PIL import Image
+from PIL import Image,ImageOps
 
 class Read_jpeg_heic_resolution(Resolution_meta.Read_resolution):
     """
@@ -8,7 +8,7 @@ class Read_jpeg_heic_resolution(Resolution_meta.Read_resolution):
     Inherits from Resolution_meta.Read_resolution.
     """
 
-    def read_resolution(self, path: str) -> dict:
+    def read_resolution(self, path: str) -> tuple[int, int] | None:
         """
         Read resolution from a JPEG or HEIC file.
 
@@ -22,6 +22,7 @@ class Read_jpeg_heic_resolution(Resolution_meta.Read_resolution):
         
         try:
             with Image.open(path) as img:
+                img = ImageOps.exif_transpose(img)  # Handle EXIF orientation
                 width, height = img.size
         except:
             return None

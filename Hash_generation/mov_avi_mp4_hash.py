@@ -6,7 +6,7 @@ from PIL import Image
 
 class Generate_mov_avi_mp4_hash(hash_gen.Generate_hash):
 
-    def get_video_hash(path, num_frames=10):
+    def generate(path, num_frames=10):
         cap = cv2.VideoCapture(path)
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_hashes = []

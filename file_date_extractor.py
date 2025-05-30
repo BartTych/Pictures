@@ -1,7 +1,7 @@
 
 import os
 
-class flie_meta_extractor:
+class file_meta_extractor:
     """Class to apply the correct extraction method based on file extension."""
     
     def __init__(self,handlers):
