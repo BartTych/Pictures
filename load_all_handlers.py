@@ -1,9 +1,9 @@
 
 
-import Processors.Read_avi as Read_avi
-import Processors.Read_jpeg as Read_jpeg
-import Processors.Read_heic as Read_heic
-import Processors.Read_mov_mp4 as Read_mov_mp4
+import Meta_extraction.avi_date as avi_date
+import Meta_extraction.jpeg_date as jpeg_date
+import Meta_extraction.heic_date as heic_date
+import Meta_extraction.mov_mp4_date as mov_mp4_date
 
 #mysle ze ta nazwa jest mylaca Rada_meto, powinienem bardziej nazwac to 
 def load_all_handlers() -> dict:
@@ -14,12 +14,12 @@ def load_all_handlers() -> dict:
 
     """
     handlers = {
-        ".avi": Read_avi.Read_avi(),
-        ".jpeg": Read_jpeg.Read_jpeg(),
-        ".jpg": Read_jpeg.Read_jpeg(),
-        ".heic": Read_heic.Read_heic(),
-        ".mov": Read_mov_mp4.Read_mov(),
-        ".mp4": Read_mov_mp4.Read_mov(),
+        ".avi": avi_date.Read_avi(),
+        ".jpeg": jpeg_date.Read_jpeg(),
+        ".jpg": jpeg_date.Read_jpeg(),
+        ".heic": heic_date.Read_heic(),
+        ".mov": mov_mp4_date.Read_mov(),
+        ".mp4": mov_mp4_date.Read_mov(),
         # Add more handlers as needed
     }
     

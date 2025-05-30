@@ -1,49 +1,12 @@
 
 
-generate list of all picture files
 
-#one core
-list_of_pictures = []
-list_of_movies = []
-# multiprocessing since hash generation is quite computationaly demanding 
-picteres = [(hash,ext)]
+na wejsciu potrzebna jest lista:
+catalog [(file, ext, resolution, creation_date, hash)]
+    w tej liscie sa wszystkie pliki ktore 
 
-# removing duplicates logic done by one processor
+puszczam funkcjonalnie operacje:
+catalog = remove_jpeg_same_size_duplicates(catalog)
+catalog = remove_jpeg_reduced_resolution_duplicates(catalog)
+...
 
-if heic && heic
-    tolerance <= 2
-# copy of the file in different archives
-logic check metadata and remove file without it
-
-if jpeg && jpeg
-    tollerance depend on resolution difference
-        for same resolutions:
-            teleranec <= 2
-        for different resolutions:
-            tolerance <= 4
-
-            metadata check 
-# copy of the file in different archives 
-# copy can have different resolution
-logic when the same resolution remove the one without metadata 
-    when smaller have meta and larger do not ask user !!
-    when larger have meta remove smaller 
-
-if heic && jpeg 
-    tolerance = have to check that !!
-    metadata check
-
-# some files in heic are converted to jpeg during downloading
-logic 
-
-***
-aditionally I will do a test for that by putting some series of files in a folder and checking if result is as expected. 
-
-
-movie processing
-
-as it was done before
-    removing files with same meta and size
-    no metafiles are a problem, don't know how to solve it yet. easiest is to put all duplicates in that folder and remove duplitates by hand 
-    since there are just a few such problematic movies. 
-      
