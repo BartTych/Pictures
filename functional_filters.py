@@ -2,6 +2,7 @@ from itertools import groupby
 from operator import itemgetter
 
 
+
 def remove_same_res_jpegs_with_lower_coding_quality(images):
     return [
         img for img in images
@@ -17,7 +18,7 @@ def has_same_resolution_duplicate_with_higher_coding_quality(img, images):
             continue
 
     
-        if bin(img["hash"] ^ other["hash"]).count("1") <= 5 and other["resolution"] == img["resolution"] and other['size'] > img['size']:
+        if bin(img['hash']^ other['hash']).count('1') <= 4 and other["resolution"] == img["resolution"] and other['size'] > img['size']:
             if img['date'] is not None and other['date'] is None:
                 #will put it in log file
                 print('lower quality image has date, but higher quality does not. requiring manual user check !!')
@@ -65,6 +66,30 @@ def remove_heic_duplicates(file_metadata_list):
     # Combine and return
     return list(non_heics) + unique_heics
 
+def remove_duplicates_with_given_ext(file_metadata_list,ext):
+    """
+    Remove duplicate HEIC files based on their hash.
+    
+    Args:
+        file_metadata_list (list): List of file metadata dictionaries.
+        
+    Returns:
+        list: List of file metadata dictionaries with duplicates removed.
+    """
+    is_ext = lambda f: f["ext"] == ext
+    ext_files = filter(is_ext, file_metadata_list)
+
+    # Sort by hash to group duplicates together
+    sorted_heics = sorted(ext_files, key=itemgetter("hash"))
+
+    # Group by hash and take the first file from each group
+    unique_files_with_ext = [next(group) for _, group in groupby(sorted_heics, key=itemgetter("hash"))]
+
+    # Keep non-heics unchanged
+    non_given_ext = filter(lambda f: f["ext"] != ext, file_metadata_list)
+
+    # Combine and return
+    return list(non_given_ext) + unique_files_with_ext
 
 def remove_converted_jpegs_with_metadata(file_list):
     """
@@ -94,3 +119,5 @@ def remove_converted_jpegs_with_metadata(file_list):
     filtered_files.extend([f for f in file_list if f['ext'] != '.jpeg'])
 
     return filtered_files
+
+

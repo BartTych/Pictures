@@ -40,7 +40,7 @@ class Read_mov(Read_meta.Read_meta):
                     date = datetime.strptime(date_str,'%Y-%m-%d %H:%M:%S UTC')
                 except:
                     return None
-                print('mov file reading correctly')
+                
                 return date
         
         return None

@@ -52,7 +52,7 @@ class Read_heic(Read_meta.Read_meta):
                 
                 try:
                     date = datetime.strptime(safe_decode(str_), '%Y:%m:%d %H:%M:%S')
-                    print('heic file reading correctly')
+                    
                     return date
                 except:
                     # Handle the case where the date format is incorrect

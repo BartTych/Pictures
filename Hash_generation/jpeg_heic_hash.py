@@ -15,5 +15,5 @@ class Generate_jpeg_heic_hash(hash_gen.Generate_hash):
         except Exception as e:
             print(f"Error generating hash for {path}: {e}")
             return None
-
+    
 

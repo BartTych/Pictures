@@ -43,7 +43,7 @@ class Read_jpeg(Read_meta.Read_meta):
                 if dt_str:
                     try:
                         date = datetime.strptime(dt_str, "%Y:%m:%d %H:%M:%S")
-                        print('jpeg file reading correctly')
+                        
                         return date
                     except:
                         

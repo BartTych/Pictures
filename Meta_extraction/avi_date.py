@@ -44,7 +44,6 @@ class Read_avi(Read_meta.Read_meta):
 
         if dt:
             #print("EXIF:DateTimeOriginal:", dt)
-            print("avi file reading correctly")
             
             try:
                 date = datetime.strptime(dt,'%Y:%m:%d %H:%M:%S')

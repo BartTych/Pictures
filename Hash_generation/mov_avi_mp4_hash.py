@@ -3,10 +3,14 @@ import Hash_generation.hash_generation_meta as hash_gen
 import cv2
 import imagehash
 from PIL import Image
+import hashlib
+import os
+import numpy as np
 
 class Generate_mov_avi_mp4_hash(hash_gen.Generate_hash):
-
-    def generate(path, num_frames=10):
+    
+    
+    def generate(self,path, num_frames=10):
         cap = cv2.VideoCapture(path)
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_hashes = []
@@ -24,4 +28,20 @@ class Generate_mov_avi_mp4_hash(hash_gen.Generate_hash):
         
         cap.release()
         return hash(''.join(frame_hashes))
+    
 
+    '''
+    def generate(self,path):
+        # Ensure path is a proper string
+        if not isinstance(path, str):
+            raise ValueError("Expected string path to video file.")
+        
+        cap = cv2.VideoCapture(path)
+        if not cap.isOpened():
+            raise IOError(f"Failed to open video file: {path}")
+        
+        # Example: read one frame
+        ret, frame = cap.read()
+        print("Frame read:", ret)
+        cap.release()
+    '''
