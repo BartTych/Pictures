@@ -12,6 +12,9 @@ class Generate_mov_avi_mp4_hash(hash_gen.Generate_hash):
     
     def generate(self,path, num_frames=10):
         cap = cv2.VideoCapture(path)
+        if not cap.isOpened():
+            print(f"Error: Could not open video file {path}")
+            return None
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_hashes = []
         

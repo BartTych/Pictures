@@ -42,8 +42,14 @@ def generate_catalog(path, max_workers=8, extensions=None):
 
     #with Pool(processes=max_workers) as pool:
     #    catalog = pool.map(process_file, file_paths)
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        catalog = list(executor.map(process_file, file_paths))
-
+    #with ThreadPoolExecutor(max_workers=max_workers) as executor:
+    #    catalog = list(executor.map(process_file, file_paths))
+    catalog = []
+    
+    for file in file_paths:
+        try:
+            catalog.append(process_file(file))
+        except Exception as e:
+            print(f"Error processing {file}: {e}")
 
     return catalog

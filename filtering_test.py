@@ -14,7 +14,9 @@ path = '/Users/bart_mac/Desktop/zdjecia_test/sandbox'
 extensions = {
     '.jpg', '.jpeg', '.mov', '.mp4', '.avi','.heic'
 }
-
+extensions = {
+    '.mov', '.mp4', '.avi'
+}
 
 start = time.perf_counter()
 catalog = generate_catalog(path,max_workers=6,extensions = extensions)
@@ -35,12 +37,10 @@ print(f"Total files processed: {len(catalog)}")
 catalog = functional_filters.remove_same_res_jpegs_with_lower_coding_quality(catalog)
 catalog = functional_filters.remove_converted_jpegs_with_metadata(catalog)# that requires no meta data handling
 
-catalog = functional_filters.remove_duplicates_with_given_ext(catalog, '.jpg')
-catalog = functional_filters.remove_duplicates_with_given_ext(catalog, '.jpeg')
-catalog = functional_filters.remove_duplicates_with_given_ext(catalog, '.heic')
-catalog = functional_filters.remove_duplicates_with_given_ext(catalog, '.mp4')
-catalog = functional_filters.remove_duplicates_with_given_ext(catalog, '.mov')
-catalog = functional_filters.remove_duplicates_with_given_ext(catalog, '.avi')
+# Remove copies besed on hash and extension
+for ext in extensions:
+    catalog = functional_filters.remove_duplicates_with_given_ext(catalog, ext)
+
 
 # what filers for pictures are missing?
 # looks good for now

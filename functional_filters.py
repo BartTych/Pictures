@@ -25,68 +25,38 @@ def has_same_resolution_duplicate_with_higher_coding_quality(img, images):
             return True
     return False
 
-def remove_jpeg_duplicates(file_metadata_list):
-    is_jpeg = lambda f: f["ext"] in [".jpg", ".jpeg"]
-    jpeg_files = filter(is_jpeg, file_metadata_list)
 
-    # Sort by hash to group duplicates together
-    sorted_jpegs = sorted(jpeg_files, key=itemgetter("hash"))
 
-    # Group by hash and take the first file from each group
-    unique_jpegs = [next(group) for _, group in groupby(sorted_jpegs, key=itemgetter("hash"))]
-
-    # Keep non-jpegs unchanged
-    non_jpegs = filter(lambda f: f["ext"] not in [".jpg", ".jpeg"], file_metadata_list)
-
-    # Combine and return
-    return list(non_jpegs) + unique_jpegs
-
-def remove_heic_duplicates(file_metadata_list):
+def remove_duplicates_with_given_ext(file_list,ext):
     """
-    Remove duplicate HEIC files based on their hash.
-    
+    Remove duplicate of *.ext files based on their hash.
+
     Args:
-        file_metadata_list (list): List of file metadata dictionaries.
+        file_list (list): List of file describing dictionaries.
         
     Returns:
-        list: List of file metadata dictionaries with duplicates removed.
+        list: List of file dictionaries with duplicates removed.
     """
-    is_heic = lambda f: f["ext"] == ".heic"
-    heic_files = filter(is_heic, file_metadata_list)
+    def choose_file_with_date_if_any(group):
+        group = list(group)
+        # Prefer files with non-None date
+        files_with_date = [f for f in group if f.get("date") is not None]
+        if files_with_date:
+            return files_with_date[0]
+        return group[0]
 
-    # Sort by hash to group duplicates together
-    sorted_heics = sorted(heic_files, key=itemgetter("hash"))
 
-    # Group by hash and take the first file from each group
-    unique_heics = [next(group) for _, group in groupby(sorted_heics, key=itemgetter("hash"))]
-
-    # Keep non-heics unchanged
-    non_heics = filter(lambda f: f["ext"] != ".heic", file_metadata_list)
-
-    # Combine and return
-    return list(non_heics) + unique_heics
-
-def remove_duplicates_with_given_ext(file_metadata_list,ext):
-    """
-    Remove duplicate HEIC files based on their hash.
-    
-    Args:
-        file_metadata_list (list): List of file metadata dictionaries.
-        
-    Returns:
-        list: List of file metadata dictionaries with duplicates removed.
-    """
     is_ext = lambda f: f["ext"] == ext
-    ext_files = filter(is_ext, file_metadata_list)
+    ext_files = filter(is_ext, file_list)
 
     # Sort by hash to group duplicates together
-    sorted_heics = sorted(ext_files, key=itemgetter("hash"))
+    sorted_files_with_ext = sorted(ext_files, key=itemgetter("hash"))
 
     # Group by hash and take the first file from each group
-    unique_files_with_ext = [next(group) for _, group in groupby(sorted_heics, key=itemgetter("hash"))]
+    unique_files_with_ext = [choose_file_with_date_if_any(group) for _, group in groupby(sorted_files_with_ext, key = itemgetter("hash"))]
 
     # Keep non-heics unchanged
-    non_given_ext = filter(lambda f: f["ext"] != ext, file_metadata_list)
+    non_given_ext = filter(lambda f: f["ext"] != ext, file_list)
 
     # Combine and return
     return list(non_given_ext) + unique_files_with_ext
