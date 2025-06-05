@@ -1,9 +1,48 @@
-from itertools import groupby
-from operator import itemgetter
+#from itertools import groupby
+#from operator import itemgetter
+from collections import defaultdict
 
+# moge napisac nowy algorytm bo okazuje sie ze jednak ladnie mi usuwa copie z dystansem zero.
+# jedynie dla zdjec chce miec sprawdzenie przez ORB newet jak odleglosc jest zero zeby niestracic czegosc fajnego 
+def remove_duplicates_base_on_humming_distance(
+    file_list: list[dict], 
+    extension: str, 
+    hamming_threshold: int
+) -> list[dict]:
+    """Removes duplicates for files with a given extension based on hash Hamming distance."""
+    
+    filtered = [f for f in file_list if f["ext"] == extension and f["hash"] is not None]
+    others = [f for f in file_list if f["ext"] != extension or f["hash"] is None]
 
+    kept = []
+    seen_hashes = []
 
-def remove_same_res_jpegs_with_lower_coding_quality(images):
+    for f in filtered:
+        current_hash = f["hash"]
+        is_duplicate = any(
+            bin(current_hash ^ prev_hash).count("1") <= hamming_threshold
+            for prev_hash in seen_hashes
+        )
+        if not is_duplicate:
+            kept.append(f)
+            seen_hashes.append(current_hash)
+
+    return kept + others
+
+def remove_jpegs_with_lower_coding_quality(images):
+    def has_same_resolution_duplicate_with_higher_coding_quality(img, images):
+        for other in images:
+            if other['ext'] not in [".jpeg", ".jpg"]:
+                continue
+
+        
+            if bin(img['hash']^ other['hash']).count('1') <= 4 and other["resolution"] == img["resolution"] and other['size'] > img['size']:
+                if img['date'] is not None and other['date'] is None:
+                    #will put it in log file
+                    print('lower quality image has date, but higher quality does not. requiring manual user check !!')
+                return True
+        return False
+    
     return [
         img for img in images
         if not (
@@ -11,57 +50,8 @@ def remove_same_res_jpegs_with_lower_coding_quality(images):
             and has_same_resolution_duplicate_with_higher_coding_quality(img, images)
         )
     ]
-
-def has_same_resolution_duplicate_with_higher_coding_quality(img, images):
-    for other in images:
-        if other['ext'] not in [".jpeg", ".jpg"]:
-            continue
-
     
-        if bin(img['hash']^ other['hash']).count('1') <= 4 and other["resolution"] == img["resolution"] and other['size'] > img['size']:
-            if img['date'] is not None and other['date'] is None:
-                #will put it in log file
-                print('lower quality image has date, but higher quality does not. requiring manual user check !!')
-            return True
-    return False
-
-
-
-def remove_duplicates_with_given_ext(file_list,ext):
-    """
-    Remove duplicate of *.ext files based on their hash.
-
-    Args:
-        file_list (list): List of file describing dictionaries.
-        
-    Returns:
-        list: List of file dictionaries with duplicates removed.
-    """
-    def choose_file_with_date_if_any(group):
-        group = list(group)
-        # Prefer files with non-None date
-        files_with_date = [f for f in group if f.get("date") is not None]
-        if files_with_date:
-            return files_with_date[0]
-        return group[0]
-
-
-    is_ext = lambda f: f["ext"] == ext
-    ext_files = filter(is_ext, file_list)
-
-    # Sort by hash to group duplicates together
-    sorted_files_with_ext = sorted(ext_files, key=itemgetter("hash"))
-
-    # Group by hash and take the first file from each group
-    unique_files_with_ext = [choose_file_with_date_if_any(group) for _, group in groupby(sorted_files_with_ext, key = itemgetter("hash"))]
-
-    # Keep non-heics unchanged
-    non_given_ext = filter(lambda f: f["ext"] != ext, file_list)
-
-    # Combine and return
-    return list(non_given_ext) + unique_files_with_ext
-
-def remove_converted_jpegs_with_metadata(file_list):
+def remove_jpegs_converted_from_heic_based_on_metadata(file_list):
     """
     Remove JPEG files that were converted from HEIC files based on metadata similarity.
     Requires updated logic for cased with files without metadata.
@@ -90,4 +80,52 @@ def remove_converted_jpegs_with_metadata(file_list):
 
     return filtered_files
 
+def check_for_copies_without_date(file_list):
+    
+    file_list = [n for n in file_list if n['date']!= None]
+    # Group by hash
+    hash_groups = defaultdict(list)
+    for img in file_list:
+        hash_groups[img['hash']].append(img)
+
+    group_lenght = {}
+    same_date = 0
+    missing_date = 0
+    for group in hash_groups.values():
+        group_lenght[len(group)] = group_lenght.get(len(group),0) + 1
+        if all([g['date']!= None for g in group]):
+            same_date += 1
+        else:
+            missing_date += 1
+        
+    return same_date, missing_date, group_lenght
+
+#chatGPT
+def remove_exact_duplicates(images):
+    def hamming_distance(hash1, hash2):
+        return bin(int(hash1, 16) ^ int(hash2, 16)).count('1')
+
+    # Group by hash
+    hash_groups = defaultdict(list)
+    for img in images:
+        hash_groups[img['hash']].append(img)
+
+    deduped = []
+    for group in hash_groups.values():
+        if len(group) == 1:
+            deduped.append(group[0])
+            continue
+
+        # If multiple images have the same hash (hamming distance 0)
+        # and only one has a 'date', keep that one
+        with_date = [img for img in group if 'date' in img and img['date']]
+        without_date = [img for img in group if 'date' not in img or not img['date']]
+
+        if len(with_date) == 1:
+            deduped.append(with_date[0])
+        else:
+            # If none or multiple have 'date', just keep the first
+            deduped.append(group[0])
+
+    return deduped
 

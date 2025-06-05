@@ -31,7 +31,7 @@ def process_file(filepath):
     return result
 
 
-def generate_catalog(path, max_workers=8, extensions=None):
+def generate_catalog(path, extensions=None):
     
     file_paths = [
         os.path.join(root, file)
