@@ -17,11 +17,11 @@ extensions = {
     '.jpg', '.jpeg', '.mov', '.mp4', '.avi','.heic','.mov', '.mp4', '.avi'
 }
 
-
-#catalog = generate_catalog(path, extensions = extensions)
-
 start = time.perf_counter()
-catalog = pickle.load(open("catalog.pkl", "rb"))
+
+catalog = generate_catalog(path, extensions = extensions)
+
+#catalog = pickle.load(open("catalog.pkl", "rb"))
 
 
 end = time.perf_counter()
@@ -39,7 +39,7 @@ print(f"Average time per file: {per_file:.4f} seconds.")
 #sorted(catalog, key=lambda x: x["date"] if x["date"] is not None else 0)
 
 #remove no hash files
-catalog = [n for n in catalog if n['hash'] == None]
+#catalog = [n for n in catalog if n['hash'] == None]
 #catalog = [n for n in catalog if n['hash'] != None]
 
 for n in catalog:
