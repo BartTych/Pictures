@@ -80,6 +80,10 @@ def remove_jpegs_converted_from_heic_based_on_metadata(file_list):
 
     return filtered_files
 
+
+
+
+
 def check_for_copies_without_date(file_list):
     
     file_list = [n for n in file_list if n['date']!= None]
@@ -99,7 +103,6 @@ def check_for_copies_without_date(file_list):
             missing_date += 1
         
     return same_date, missing_date, group_lenght
-
 #chatGPT
 def remove_exact_duplicates(images):
     def hamming_distance(hash1, hash2):

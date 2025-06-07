@@ -1,72 +1,74 @@
-import load_date_extractors
-import file_date_extractor as file_date_extractor
-import os
-import shutil
-# Assuming handlers are classes that inherit from Read_meta
 
-handlers = load_date_extractors.load_all_handlers()
-file_date_extractor = file_date_extractor.flie_meta_extractor(handlers)
+#from catalog_test_generation import FileMetadataExtractor
+import functional_filters
+import pickle
 
+import file_utils
 
-valid_extensions = {'.jpg', '.jpeg', '.heic','.mov','.mp4','.avi'}
-#path ='/Users/bart_mac/Desktop/zdjecia_test/sandbox'
-path ='/Users/bart_mac/Desktop/Cloud_storage'
-new_path = '/Users/bart_mac/Desktop/No_date_files'
-#have to decide where to put logic for extension checking
-
-files_ordered = set()
-ordered_repeat_check = set()    
+import time
 
 
-files_not_ordered = set()
-not_ordered_repeat_check = set()
+
+from catalog_test_generation import generate_catalog
+
+path = '/Users/bart_mac/Desktop/zdjecia_test/sandbox'
+
+extensions = {
+    '.jpg', '.jpeg', '.mov', '.mp4', '.avi','.heic','.mov', '.mp4', '.avi'
+}
 
 
-# new repeat check besed on file hash for both ordered and not ordered files
-# if the file hash is in the set it is neccesary to chech which is larger
-# when it is larger it replaces the smaller one
-# when it is smaller it is not added to the set and script continues
-# so the whole idea of previous repeat check is not needed just some info in whinch set the file is
+#catalog = generate_catalog(path, extensions = extensions)
+
+start = time.perf_counter()
+catalog = pickle.load(open("catalog.pkl", "rb"))
 
 
-# Walk through the directory and process files
-# prepares set of files with metadata and without metadata
-# without repeatitions
-# repeatitions are checked by metadata and file size when metadata is available
-# when metadata is not available it is checked by file name and file size
+end = time.perf_counter()
+
+elapsed = end - start
+num_files = len(catalog)
+per_file = elapsed / num_files if num_files else 0
+
+print(f"\nProcessed {num_files} files in {elapsed:.2f} seconds.")
+print(f"Average time per file: {per_file:.4f} seconds.")
+
+# picle catalog 
+#pickle.dump(catalog, open("catalog.pkl", "wb"))
+
+#sorted(catalog, key=lambda x: x["date"] if x["date"] is not None else 0)
+
+#remove no hash files
+catalog = [n for n in catalog if n['hash'] != None]
+print(f"Total files processed: {len(catalog)}")
+
+#for n in catalog:
+#    print(f"{n['hash']}")
 
 
-for root, dirs, files in os.walk(path):
-        for file in files:
-            if os.path.splitext(file)[1].lower() not in valid_extensions or os.path.basename(file).startswith('.'):
-                continue
-            file_path = os.path.join(root, file)
-            
-            metadata = file_date_extractor.apply(file_path)
-            if metadata is not None:
-                if (metadata,os.path.getsize(file_path)) not in ordered_repeat_check:
-                    ordered_repeat_check.add((metadata,os.path.getsize(file_path)))
-                    files_ordered.add((file_path, metadata))
-                    continue
-            else:
-                if (file, os.path.getsize(file_path)) not in not_ordered_repeat_check:
-                    not_ordered_repeat_check.add((file_path, os.path.getsize(file_path)))
-                    files_not_ordered.add(file_path)
-                    continue
+same_date,missing_date,lenght_dict = functional_filters.check_for_copies_without_date(catalog)
+print(f"same date: {same_date} missing_date {missing_date}")
 
-for file in files_not_ordered:
-    if not os.path.exists(new_path):
-        os.makedirs(new_path)
-    extention = os.path.splitext(file)[1]
-    file_name = os.path.basename(file) 
-    new_file_path = os.path.join(new_path, file_name)
-    shutil.copy2(file, new_file_path)
-    print(f"File {file} copied to {new_file_path}")
+powtorzenia = sorted(list(lenght_dict.items()))
+
+for n, m in powtorzenia:
+    print(f"lenght {n} ilosc {m}")
+
+#catalog = functional_filters.remove_jpegs_with_lower_coding_quality(catalog)
+
+#catalog = functional_filters.remove_duplicates_base_on_humming_distance(catalog,'.mov', 0)    
+#catalog = functional_filters.remove_duplicates_base_on_humming_distance(catalog,'.avi', 0)    
+#catalog = functional_filters.remove_duplicates_base_on_humming_distance(catalog,'.mp4', 0)    
+#catalog = functional_filters.remove_duplicates_base_on_humming_distance(catalog,'.heic', 0)    
+#catalog = functional_filters.remove_duplicates_base_on_humming_distance(catalog,'.jpeg', 0)    
+#catalog = functional_filters.remove_duplicates_base_on_humming_distance(catalog,'.jpg', 0)    
+
+#catalog = [n for n in catalog if n['date']== None]
 
 
-for file_path, metadata in files_ordered:
-    print(f"File: {file_path}, Date: {metadata}")
-print("Files with no date:")
-for file_path in files_not_ordered:
-    print(f"File: {file_path}")
+#file_utils.copy_files_with_date('/Users/bart_mac/Desktop/zdjecia_test/sandbox/new_files', catalog)
+
+print(f"length: {len(catalog)}")
+
+
 
