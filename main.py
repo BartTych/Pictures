@@ -9,7 +9,7 @@ import time
 
 
 
-from catalog_test_generation import generate_catalog
+from catalog_generation import generate_catalog
 
 path = '/Users/bart_mac/Desktop/zdjecia_test/sandbox'
 
@@ -39,20 +39,25 @@ print(f"Average time per file: {per_file:.4f} seconds.")
 #sorted(catalog, key=lambda x: x["date"] if x["date"] is not None else 0)
 
 #remove no hash files
-catalog = [n for n in catalog if n['hash'] != None]
+catalog = [n for n in catalog if n['hash'] == None]
+#catalog = [n for n in catalog if n['hash'] != None]
+
+for n in catalog:
+    print(n['file_path'])
+
 print(f"Total files processed: {len(catalog)}")
 
 #for n in catalog:
 #    print(f"{n['hash']}")
 
 
-same_date,missing_date,lenght_dict = functional_filters.check_for_copies_without_date(catalog)
-print(f"same date: {same_date} missing_date {missing_date}")
+#same_date,missing_date,lenght_dict = functional_filters.check_for_copies_without_date(catalog)
+#print(f"same date: {same_date} missing_date {missing_date}")
 
-powtorzenia = sorted(list(lenght_dict.items()))
+#powtorzenia = sorted(list(lenght_dict.items()))
 
-for n, m in powtorzenia:
-    print(f"lenght {n} ilosc {m}")
+#for n, m in powtorzenia:
+#    print(f"lenght {n} ilosc {m}")
 
 #catalog = functional_filters.remove_jpegs_with_lower_coding_quality(catalog)
 
@@ -68,7 +73,7 @@ for n, m in powtorzenia:
 
 #file_utils.copy_files_with_date('/Users/bart_mac/Desktop/zdjecia_test/sandbox/new_files', catalog)
 
-print(f"length: {len(catalog)}")
+#print(f"length: {len(catalog)}")
 
 
 
