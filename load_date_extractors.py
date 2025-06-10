@@ -18,8 +18,8 @@ def load_all_handlers() -> dict:
         ".jpeg": jpeg_date.Read_jpeg(),
         ".jpg": jpeg_date.Read_jpeg(),
         ".heic": heic_date.Read_heic(),
-        ".mov": mov_mp4_date.Read_mov(),
-        ".mp4": mov_mp4_date.Read_mov(),
+        ".mov": mov_mp4_date.Read_mov_mp4(),
+        ".mp4": mov_mp4_date.Read_mov_mp4(),
         # Add more handlers as needed
     }
     

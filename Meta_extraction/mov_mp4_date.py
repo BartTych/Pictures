@@ -3,7 +3,7 @@ import Meta_extraction.Read_meta as Read_meta
 from pymediainfo import MediaInfo
 from datetime import datetime
 
-class Read_mov(Read_meta.Read_meta):
+class Read_mov_mp4(Read_meta.Read_meta):
     """
     Class for reading MOV files.
     Inherits from Read_meta.
