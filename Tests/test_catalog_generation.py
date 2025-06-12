@@ -1,5 +1,8 @@
 import pytest
 import catalog_generation
+import pathlib
+import os
+import shutil
 
 @pytest.mark.parametrize(
     "file_structure, extensions, expected_count, expected_files",
@@ -49,6 +52,7 @@ import catalog_generation
         ),
     ]
 )
+
 def test_read_all_file_paths_with_extentions_parametrized(
     tmp_path, file_structure, extensions, expected_count, expected_files
 ):
@@ -68,3 +72,20 @@ def test_read_all_file_paths_with_extentions_parametrized(
     assert len(result) == expected_count
     result_files = {str(path).replace(str(tmp_path) + "/", "") for path in result}
     assert result_files == expected_files
+
+def test_creation_of_catalog(tmp_path):
+    extensions = {
+    '.jpg', '.jpeg', '.mov', '.mp4', '.avi','.heic','.mov', '.mp4', '.avi'
+}
+    test_data_dir = pathlib.Path(__file__).parent / "resources"
+    files = catalog_generation.read_all_file_paths_with_extentions(test_data_dir,extensions)
+    for file in files:
+        name = os.path.basename(file)
+        shutil.copy2(file,tmp_path / name)
+    
+    catalog = catalog_generation.generate_catalog(tmp_path,extensions)
+
+    
+    assert len(catalog) == len(files)
+    for n in catalog:
+        assert isinstance(n,dict)

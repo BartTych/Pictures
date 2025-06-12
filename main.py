@@ -19,6 +19,7 @@ extensions = {
 
 start = time.perf_counter()
 
+# to wymaga sprawdzenia unit testami 
 catalog = generate_catalog(path, extensions = extensions)
 
 #catalog = pickle.load(open("catalog.pkl", "rb"))

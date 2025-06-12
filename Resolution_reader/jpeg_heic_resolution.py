@@ -1,6 +1,8 @@
 
 import Resolution_reader.Resolution_meta as Resolution_meta
 from PIL import Image,ImageOps
+import pillow_heif
+pillow_heif.register_heif_opener()
 
 class Read_jpeg_heic_resolution(Resolution_meta.Read_resolution):
     """

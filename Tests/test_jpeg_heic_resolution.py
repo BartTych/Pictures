@@ -14,7 +14,7 @@ def test_read_resolution_on_copied_files(tmp_path):
 
     dst_image_1 = tmp_path / "DSC_0007.JPG.jpg"
     dst_image_2 = tmp_path / "DSC_0008.JPG.jpg"
-    dst_image_3 = tmp_path / "DSC_0007_copy.JPG.jpg"
+    dst_image_3 = tmp_path / "DSC_0007_copy.JPG"
     
     dst_image_4 = tmp_path / "1.heic"  # or .heic if supported!
     dst_image_5 = tmp_path / "3.heic"

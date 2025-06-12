@@ -1,9 +1,7 @@
 import pathlib
 import shutil
-import pytest
-import sys
+
 # adding Folder_2/subfolder to the system path
-sys.path.insert(0, pathlib.Path(__file__).parent/'Hash_generation')
 from Hash_generation.jpeg_heic_hash import Generate_jpeg_heic_hash  # adjust import!
 
 def test_generate_phash_on_copied_image(tmp_path):
