@@ -18,7 +18,7 @@ date_extractor = file_date_extractor.file_meta_extractor(date_extractors)
 hash_generator = file_hash_generator.file_hash_generator(hash_generators)
 resolution_reader = file_resolution_reader.file_resolution_reader(resolution_readers)
 
-def process_file(filepath, date_extractor, resolution_reader, hash_generator):
+def process_file(filepath):
     result = {
         "file_path": filepath,
         "ext": os.path.splitext(filepath)[1].lower(),
@@ -43,7 +43,7 @@ def generate_catalog(path, extensions=None):
     
     for file in file_paths:
         try:
-            catalog.append(process_file(file,date_extractor,resolution_reader,hash_generator))
+            catalog.append(process_file(file))
         except Exception as e:
             print(f"Error processing {file}: {e}")
 
