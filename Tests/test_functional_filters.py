@@ -3,6 +3,8 @@ import catalog_generation
 import os
 import pathlib
 import shutil
+from datetime import datetime
+import pytest
 
 def test_remove_duplicates_based_on_humming_distance(tmp_path):
     extensions = {
@@ -40,3 +42,61 @@ def test_removing_jpeg_converted_from_heic(tmp_path):
     catalog = catalog_generation.generate_catalog(tmp_path,extensions)
 
     assert len(functional_filters.remove_jpegs_converted_from_heic_based_on_metadata(catalog)) == len(catalog) - 1
+
+test_cases = [
+    # Case 1: three valid files in July 2023
+    (
+        [
+            ("file1.jpg", 48),
+            ("file2.jpg", 34),
+            ("file3.jpg", 54),
+
+        ],
+        [
+            ("file1.jpg", 48),
+            ("file2.jpg", 34),
+            ("file3.jpg", 75),
+
+        ],
+
+        [
+            {"file_path": "file3.jpg","hash":54},
+        ] 
+    ),
+    (
+        [
+            ("file1.jpg", 48),
+            ("file2.jpg", 34),
+
+        ],
+        [
+            ("file1.jpg", 48),
+            ("file2.jpg", 34),
+            ("file3.jpg", 75),
+
+        ],
+        
+        [      
+        ] 
+    ),
+]
+
+@pytest.mark.parametrize("cat, base, expected", test_cases)
+def test_substract_one_catalog_from_the_othere(cat,base,expected):
+    catalog = []
+    for path,hash in cat:
+        catalog.append({
+            "file_path": path,
+            "hash": hash
+        })
+
+    base_catalog = []
+    for path,hash in base:
+        base_catalog.append({
+            "file_path": path,
+            "hash": hash
+        })
+
+    result = functional_filters.substract_one_set_from_the_other(catalog, base_catalog)
+    assert result == expected
+    

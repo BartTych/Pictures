@@ -63,3 +63,14 @@ def remove_jpegs_converted_from_heic_based_on_metadata(file_list):
     return filtered_files
 
 
+def substract_one_set_from_the_other(catalog, base_catalog):
+
+    set_of_base_catalog = set()
+    for n in base_catalog:
+        set_of_base_catalog.add(n['hash'])
+
+    new_catalog = [n for n in catalog if n['hash'] not in set_of_base_catalog]
+    return new_catalog
+    # works by createnig set of hashes from one catalog
+
+    # [n in catalog if n['hash'] not in set_of_first_catolog]
