@@ -11,7 +11,9 @@ import time
 
 from catalog_generation import generate_catalog
 
-path = '/Users/bart_mac/Desktop/zdjecia_test/sandbox'
+path = '/Users/bart_mac/Desktop/05'
+destination = '/Users/bart_mac/Desktop/new_05'
+destination_no_date = '/Users/bart_mac/Desktop/new_05_no_date'
 
 extensions = {
     '.jpg', '.jpeg', '.mov', '.mp4', '.avi','.heic','.mov', '.mp4', '.avi'
@@ -72,7 +74,8 @@ print(f"Total files processed: {len(catalog)}")
 #catalog = [n for n in catalog if n['date']== None]
 
 
-#file_utils.copy_files_with_date('/Users/bart_mac/Desktop/zdjecia_test/sandbox/new_files', catalog)
+file_utils.copy_files_with_date(destination, catalog)
+file_utils.copy_files_without_date(destination_no_date, catalog)
 
 #print(f"length: {len(catalog)}")
 

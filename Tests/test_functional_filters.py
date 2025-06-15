@@ -79,6 +79,25 @@ test_cases = [
         [      
         ] 
     ),
+    (
+        [
+            ("file1.jpg", 48),
+            ("file2.jpg", 34),
+            ("file3.jpg", 54),
+            ("file4.jpg", None),
+
+        ],
+        [
+            ("file1.jpg", 48),
+            ("file2.jpg", 34),
+            ("file3.jpg", 75),
+
+        ],
+
+        [
+            {"file_path": "file3.jpg","hash":54},
+        ] 
+    ),
 ]
 
 @pytest.mark.parametrize("cat, base, expected", test_cases)
