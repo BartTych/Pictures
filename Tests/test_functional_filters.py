@@ -96,6 +96,7 @@ test_cases = [
 
         [
             {"file_path": "file3.jpg","hash":54},
+            {"file_path": "file4.jpg","hash":None},
         ] 
     ),
 ]

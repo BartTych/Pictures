@@ -34,12 +34,12 @@ def process_file(filepath):
 def generate_catalog(path, extensions=None):
     
     file_paths = read_all_file_paths_with_extentions(path, extensions)
-
+    catalog = []
     #with Pool(processes=max_workers) as pool:
     #    catalog = pool.map(process_file, file_paths)
     #with ThreadPoolExecutor(max_workers=max_workers) as executor:
     #    catalog = list(executor.map(process_file, file_paths))
-    catalog = []
+    
     
     for file in file_paths:
         try:
